@@ -1,3 +1,9 @@
+v2.0 September 5th, 2015
+o IMPORTANT: Name changed from "Followers" to "Buddies With Me"!
+o Fixed issue where mod generated duplicate entries within the table.
+o Modified template and source files to use SMF list-building code.
+o Removed Brazilian Portugese due to multiple changes within the mod.
+
 v1.11 - August 29th, 2015
 o Removed support for SMF 2.1 Beta 1
 o Added support for SMF 2.1 Beta 2

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
-<name>Followers</name>
+<name>Buddies With Me (aka Followers)</name>
 <id>Dougiefresh:Followers</id>
-<version>1.11</version>
+<version>2.0</version>
 
 <!-------------------------------------------------------------------------------->
 <!-- Source Edits                                                               -->
@@ -12,33 +12,31 @@
 	<operation>
 		<search position="before"><![CDATA['purgeinactive' => 'MaintainPurgeInactiveMembers',]]></search>
 		<add><![CDATA[
-				'resyncfollowers' => 'ResyncFollowers',]]></add>
+				'BWM_Resync' => 'BWM_Resync',]]></add>
 	</operation>
 	<operation>
-		<search position="replace"><![CDATA[}
+		<search position="after"><![CDATA[}
 
 // Supporting function for the topics maintenance area.]]></search>
 		<add><![CDATA[
-	if (isset($_GET['done']) && $_GET['done'] == 'resyncfollowers')
-		$context['maintenance_finished'] = $txt['resyncfollowers_done'];	
+	if (isset($_GET['done']) && $_GET['done'] == 'BWM_Resync')
+		$context['maintenance_finished'] = $txt['BWM_resync_done'];	
 }
 
 // Supporting function for followers table maintanence:
-function ResyncFollowers()
+function BWM_Resync()
 {
 	global $sourcedir;
-	require_once($sourcedir . '/Subs-Followers.php');
-	ResyncFollowers2();
-}
-
-// Supporting function for the topics maintenance area.]]></add>
+	require_once($sourcedir . '/Subs-BuddiesWithMe.php');
+	BWM_Resync2();
+]]></add>
 	</operation>
 </file>
 <file name="$sourcedir/Profile.php">
 	<operation>
 		<search position="before"><![CDATA['buddies' => array($txt['editBuddies']),]]></search>
 		<add><![CDATA[
-						'followers' => array($txt['Followers']),]]></add>
+						'BWM' => array($txt['BWM']),]]></add>
 	</operation>
 </file>
 <file name="$sourcedir/Profile-Modify.php">
@@ -46,18 +44,18 @@ function ResyncFollowers()
 		<search position="before"><![CDATA['tabs' => array(
 			'buddies' => array(),]]></search>
 		<add><![CDATA[
-			'followers' => array(),]]></add>
+			'BWM' => array(),]]></add>
 	</operation>
 	<operation>
 		<search position="before"><![CDATA[	$subActions = array(
 		'buddies' => array('editBuddies', $txt['editBuddies']),]]></search>
 		<add><![CDATA[
-		'followers' => array('Followers', $txt['Followers']),]]></add>
+		'BWM' => array('BuddiesWithMe', $txt['BWM']),]]></add>
 	</operation>
 	<operation>
 		<search position="after"><![CDATA[// Can we email the user direct?]]></search>
-		<add><![CDATA[// Include the file we need for the followers stuff...
-	require_once($sourcedir . '/Subs-Followers.php');
+		<add><![CDATA[// Include the file we need for the Buddies With Me stuff...
+	require_once($sourcedir . '/Subs-BuddiesWithMe.php');
 
 	]]></add>
 	</operation>
@@ -66,17 +64,19 @@ function ResyncFollowers()
 
 		// Redirect off the page because we don't like all this ugly query stuff to stick in the history.]]></search>
 		<add><![CDATA[
-		removeFollower((int) $_GET['remove']);]]></add>
+		require_once($sourcedir . '/Subs-BuddiesWithMe.php');
+		BWM_Remove((int) $_GET['remove']);]]></add>
 	</operation>
 	<operation>
 		<search position="replace"><![CDATA[// Add the new member to the buddies array.
 			while ($row = $smcFunc['db_fetch_assoc']($request))
 				$buddiesArray[] = (int) $row['id_member'];]]></search>
 		<add><![CDATA[// Add the new member to the buddies array.
+			require_once($sourcedir . '/Subs-BuddiesWithMe.php');
 			while ($row = $smcFunc['db_fetch_assoc']($request))
 			{
 				$buddiesArray[] = (int) $row['id_member'];
-				addFollower((int) $row['id_member']);
+				BWM_Add((int) $row['id_member']);
 			}]]></add>
 	</operation>
 </file>
@@ -95,17 +95,17 @@ function ResyncFollowers()
 	elseif ($user_info['id'] != $_REQUEST['u'])
 		$user_info['buddies'][] = (int) $_REQUEST['u'];]]></search>
 		<add><![CDATA[// Remove if it's already there...
-	require_once($sourcedir . '/Subs-Followers.php');
+	require_once($sourcedir . '/Subs-BuddiesWithMe.php');
 	if (in_array($_REQUEST['u'], $user_info['buddies']))
 	{
 		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
-		removeFollower((int) $_REQUEST['u']);
+		BWM_Remove((int) $_REQUEST['u']);
 	}
 	// ...or add if it's not and if it's not you.
 	elseif ($user_info['id'] != $_REQUEST['u'])
 	{
 		$user_info['buddies'][] = (int) $_REQUEST['u'];
-		addFollower((int) $_REQUEST['u']);
+		BWM_Add((int) $_REQUEST['u']);
 	}]]></add>
 	</operation>
 </file>
@@ -124,13 +124,13 @@ function ResyncFollowers()
 	<add><![CDATA[<span class="botslice"><span></span></span>
 		</div>
 		<div class="cat_bar">
-			<h3 class="catbg">', $txt['maintain_followers_table'], '</h3>
+			<h3 class="catbg">', $txt['BWM_maintain_table'], '</h3>
 		</div>
 		<div class="windowbg">
 			<span class="topslice"><span></span></span>
 			<div class="content">
-				<form action="', $scripturl, '?action=admin;area=maintain;sa=members;activity=resyncfollowers" method="post" accept-charset="', $context['character_set'], '" id="membersForm">
-					<p><a id="membersLink"></a>', $txt['maintain_followers_table_desc'], '<br/><br/>
+				<form action="', $scripturl, '?action=admin;area=maintain;sa=members;activity=BWM_Resync" method="post" accept-charset="', $context['character_set'], '" id="membersForm">
+					<p><a id="membersLink"></a>', $txt['BWM_maintain_table_desc'], '<br/><br/>
 					<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
 					<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
 				</form>
@@ -139,14 +139,58 @@ function ResyncFollowers()
 	</operation>
 </file>
 
+<file name="$themedir/Profile.template.php">
+	<operation>
+		<search position="end" />
+		<add><![CDATA[
+function template_BuddiesWithMe()
+{
+	template_show_list('buddies_with_me');
+}
+
+]]></add>
+	</operation>
+</file>
+
 <!-------------------------------------------------------------------------------->
-<!-- New SSI function for gathering the names of our followers :p (SSI.php)     -->
+<!-- New SSI function for gathering the names of our Buddies With Me (SSI.php)  -->
 <!-------------------------------------------------------------------------------->
 <file name="$boarddir/SSI.php">
 	<operation>
-		<search position="after"><![CDATA[require_once($sourcedir . '/Security.php');]]></search>
+		<search position="end" />
 		<add><![CDATA[
-require_once($sourcedir . '/Subs-Followers.php');]]></add>
+function ssi_getFollowers($include_banned = false, $output_method = 'echo', $user_id = -1)
+{
+	return ssi_getBuddiesWithMe($include_banned, $output_method, $user_id);
+}
+
+function ssi_getBuddiesWithMe($include_banned = false, $output_method = 'echo', $user_id = -1)
+{
+	global $smcFunc, $user_info, $scripturl;
+
+	$request = $smcFunc['db_query']('', '
+		SELECT m.real_name, m.id_member
+		FROM {db_prefix}buddies AS b
+		INNER JOIN {db_prefix}members AS m ON (b.id_member = m.id_member)
+		WHERE b.is_buddies_with = {int:user_id}' . (!$include_banned ? ' AND m.is_activated < 10' : '') . '
+		ORDER BY m.real_name',
+		array(
+			'user_id' => (int) ($user_id <> -1 ? $user_id : $user_info['id']),
+		)
+	);
+	$buddies = array();
+	while ($row = $smcFunc['db_fetch_assoc']($request))
+		$buddies[$row['id_member']] = $row['real_name'];
+	$smcFunc['db_free_result']($request);
+	
+	if ($output_method <> 'echo')
+		return $buddies;
+		
+	foreach ($buddies as $id => $name)
+		$buddies[$id] = '<a href="' . $scripturl . '/index.php?action=profile;u=' . $id . '">' . $name . '</a>';
+	echo implode(',', $buddies);
+}
+]]></add>
 	</operation>
 </file>
 <file name="$boarddir/ssi_examples.php">
@@ -180,5 +224,4 @@ require_once($sourcedir . '/Subs-Followers.php');]]></add>
 			</div>]]></add>
 	</operation>
 </file>
-
 </modification>

@@ -10,7 +10,7 @@ if ((SMF == 'SSI') && !$user_info['is_admin'])
    die('Admin priveleges required.');
 db_extend('packages');
 
-// Build the followers table:
+// Build the buddies table:
 $columns = array(
 	array(
 		'name' => 'id_member',
@@ -19,7 +19,7 @@ $columns = array(
 		'unsigned' => true,
 	),
 	array(
-		'name' => 'follows',
+		'name' => 'is_buddies_with',
 		'type' => 'int',
 		'size' => 8,
 		'unsigned' => true,
@@ -30,9 +30,9 @@ $indexes = array(
 		'columns' => array('id_member')
 	),
 	array(
-		'columns' => array('follows')
+		'columns' => array('is_buddies_with')
 	),
 );
-$smcFunc['db_create_table']('{db_prefix}followers', $columns, $indexes, array(), 'update_remove');
+$smcFunc['db_create_table']('{db_prefix}buddies', $columns, $indexes, array(), 'update_remove');
 
 ?>

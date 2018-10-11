@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
-<name>Followers</name>
-<id>Dougiefresh:Followers</id>
-<version>1.11</version>
+<name>Buddies With Me (aka BWM)</name>
+<id>Dougiefresh:BWM</id>
+<version>2.0</version>
 
 <!-------------------------------------------------------------------------->
 <!-- Language file edits (English - Profile & ManageMaintenance)          -->
@@ -11,9 +11,9 @@
 <file name="$themedir/languages/Profile.english.php">
 	<operation>
 		<search position="after"><![CDATA[$txt['no_profile_edit'] = 'You are not allowed to change this person\'s profile.';]]></search>
-		<add><![CDATA[$txt['Followers'] = 'Followers';
-$txt['Followers_List'] = 'Listing of Followers';
-$txt['Followers_Nobody'] = 'Nobody is following you.';
+		<add><![CDATA[$txt['BWM'] = 'Buddies With Me';
+$txt['BWM_List'] = 'Who\'s Buddies With Me';
+$txt['BWM_Nobody'] = 'No one is Buddies with you.';
 
 ]]></add>
 	</operation>
@@ -21,9 +21,9 @@ $txt['Followers_Nobody'] = 'Nobody is following you.';
 <file name="$themedir/languages/ManageMaintenance.english.php">
 	<operation>
 		<search position="after"><![CDATA[$txt['repair_zero_ids'] = 'Found topics and/or messages with topic or message IDs of 0.';]]></search>
-		<add><![CDATA[$txt['maintain_followers_table'] = 'Resync Followers Table';
-$txt['maintain_followers_table_desc'] = 'Should the followers table become incorrect: this function will rebuild the followers table.';
-$txt['resyncfollowers_done'] = 'Resyncing Followers table';
+		<add><![CDATA[$txt['BWM_maintain_table'] = 'Resync Buddies With Me Table';
+$txt['BWM_maintain_table_desc'] = 'Should the Buddies With Me table become incorrect: this function will rebuild the table.';
+$txt['BWM_resync_done'] = 'Resyncing Buddies With Me table';
 
 ]]></add>
 	</operation>

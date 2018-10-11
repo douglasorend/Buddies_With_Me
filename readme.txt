@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.11[/b][/size][/color]
+[center][color=red][size=16pt][b]BUDDIES WITH ME v2.0[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -7,7 +7,7 @@
 [color=blue][b][size=12pt][u]Introduction[/u][/size][/b][/color]
 This mod adds a page to the Profile area under [b]Buddies/Ignore List[/b] that lists everybody that lists you as a buddy.  Note that you cannot remove someone from their buddies list!
 
-This mod also adds a resync function to the Admin area under [b]Forum Maintenance[/b], under [b]Members[/b], in the event the followers table ever becomes unsynced.
+This mod also adds a resync function to the Admin area under [b]Forum Maintenance[/b], under [b]Members[/b], in the event the Buddies With Me table ever becomes unsynced.
 
 [color=blue][b][size=12pt][u]Related Discussion[/u][/size][/b][/color]
 - [url=http://www.simplemachines.org/community/index.php?topic=524878.0]Easiest way to display a list of everyone whos added me as a buddy on my profile[/url]
