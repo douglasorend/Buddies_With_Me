@@ -51,35 +51,24 @@ function ResyncFollowers2()
 			// Process this member's buddy list for the array:
 			$list = explode(',', $row['buddy_list']);
 			foreach ($list as $buddy)
-				$followers[] = array($row['id_member'], $buddy);
+				$followers[] = array((int) $row['id_member'], (int) $buddy);
 
 			// Are we at the end of members OR hit the 100th member?
-			if (($pos % 100) == 0 || $pos == $max)
-			{
-				// Dump the array to the followers table:
-				if (!empty($followers))
-					$smcFunc['db_insert']('replace',
-						'{db_prefix}followers',
-						array('id_member' => 'int', 'follows' => 'text'),
-						$followers,
-						array('id_member', 'follows')
-					);
-				$followers = array();
-			}
-		}
-				
-		// Are we over the 10-second mark?
-		if (time() > $time + 10)
-		{
-			// Dump the array to the followers table:
 			if (!empty($followers))
+			{
 				$smcFunc['db_insert']('replace',
 					'{db_prefix}followers',
-					array('id_member' => 'int', 'follows' => 'text'),
+					array('id_member' => 'int', 'follows' => 'int'),
 					$followers,
 					array('id_member', 'follows')
 				);
-				
+				$followers = array();
+			}
+		}
+
+		// Are we over the 10-second mark?
+		if (time() > $time + 10)
+		{
 			// Setup everything for the next run:
 			$context['sub_template'] = 'not_done';
 			$context['continue_percent'] = (int) (($pos / $max) * 100);
@@ -131,7 +120,7 @@ function Followers()
 }
 
 // Remove user in question from the followers table:
-function removeFollower($user_id)
+function removeFollower($dest_id)
 {
 	global $smcFunc, $user_info;
 
@@ -141,20 +130,20 @@ function removeFollower($user_id)
 			AND follows = {int:follows}',
 		array(
 			'user_id' => (int) $user_info['id'],
-			'follows' => $user_id,
+			'follows' => (int) $dest_id,
 		)
 	);
 }
 
 // Add user in question to the followers table:
-function addFollower($user_id)
+function addFollower($dest_id)
 {
 	global $smcFunc, $user_info;
 
 	$smcFunc['db_insert']('replace',
 		'{db_prefix}followers',
 		array('id_member' => 'int', 'follows' => 'text'),
-		array($user_info['id'], $user_id),
+		array((int) $user_info['id'], (int) $dest_id),
 		array('id_member', 'follows')
 	);
 }
