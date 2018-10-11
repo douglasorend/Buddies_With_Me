@@ -3,7 +3,40 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
 	<name>Followers List</name>
 	<id>Dougiefresh:Followers</id>
-	<version>1.0</version>
+	<version>1.3</version>
+
+<!-------------------------------------------------------------------------------->
+<!-- New SSI function for gathering the names of our followers :p (SSI.php)     -->
+<!-------------------------------------------------------------------------------->
+<file name="$boarddir/SSI.php">
+	<operation>
+		<search position="after"><![CDATA[// This shuts down the SSI and shows the footer.]]></search>
+		<add><![CDATA[// Gets the whole followers list.
+function ssi_getFollowers($include_banned = false)
+{
+	global $smcFunc, $user_info;
+
+	$request = $smcFunc['db_query']('', '
+		SELECT m.real_name, m.id_member
+		FROM {db_prefix}followers AS f
+		INNER JOIN {db_prefix}members AS m ON (f.id_member = m.id_member)
+		WHERE f.follows = {int:user_id}' . ($include_banned ? ' AND m.is_activated < 10' : '') . '
+		ORDER BY m.real_name',
+		array(
+			'user_id' => (int) $user_info['id'],
+		)
+	);
+	$followers = array();
+	while ($row = $smcFunc['db_fetch_assoc']($request))
+		$followers[$row['id_member']] = $row['real_name'];
+	$smcFunc['db_free_result']($request);
+	
+	return $followers;
+}
+
+]]></add>
+	</operation>
+</file>
 
 <!-------------------------------------------------------------------------------->
 <!-- Source Edits                                                               -->

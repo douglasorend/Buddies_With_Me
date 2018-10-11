@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.2[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.3[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -21,8 +21,10 @@ This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is
 DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly included in v1.1 and did not include any functionality changes from v1.0 (and 1.0a).  v1.2 fixes this!!!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
+[u][b]v1.3 - June 23th, 2014[/b][/u]
+o Included SSI function to pull the list of followers
+
 [u][b]v1.2 - June 21th, 2014[/b][/u]
-o Fixed missing upgrade instructions from v1.0 and v1.1 so that it is now fully uninstallable!
 o Placed the new functions for the Followers into their own seperate file to try to reduce memory requirements.
 
 [u][b]v1.1 - June 20th, 2014[/b][/u]
