@@ -21,6 +21,10 @@ This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is
 DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly included in v1.1 and did not include any functionality changes from v1.0 (and 1.0a).  v1.2 fixes this!!!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
+[u][b]v1.4 - June 27th, 2014[/b][/u]
+o Modified SSI function [b]ssi_getFollowers[/b] to echo out results if changed...
+o Added example code for [b]ssi_getFollowers[/b] function in [b]ssi_examples.php[/b]...
+
 [u][b]v1.3 - June 23th, 2014[/b][/u]
 o Included SSI function to pull the list of followers
 
