@@ -160,7 +160,7 @@ function addFollower($user_id)
 }
 
 // Gets the whole followers list.
-function ssi_getFollowers($include_banned = false, $output_method = 'echo')
+function ssi_getFollowers($include_banned = false, $output_method = 'echo', $user_id = -1)
 {
 	global $smcFunc, $user_info, $scripturl;
 
@@ -171,7 +171,7 @@ function ssi_getFollowers($include_banned = false, $output_method = 'echo')
 		WHERE f.follows = {int:user_id}' . (!$include_banned ? ' AND m.is_activated < 10' : '') . '
 		ORDER BY m.real_name',
 		array(
-			'user_id' => (int) $user_info['id'],
+			'user_id' => (int) ($user_id <> -1 ? $user_id : $user_info['id']),
 		)
 	);
 	$followers = array();

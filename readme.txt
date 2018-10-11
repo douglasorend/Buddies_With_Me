@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.5[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.6[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -21,7 +21,11 @@ This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is
 DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly included in v1.1 and did not include any functionality changes from v1.0 (and 1.0a).  v1.2 fixes this!!!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
-[u][b]v1.5 - July 28[/b][/u]
+[quote]
+[u][b]v1.6 - August 4th, 2014[/b][/u]
+o Modified SSI function to accept user ID as a parameter # 3....
+
+[u][b]v1.5 - July 28th, 2014[/b][/u]
 o Moved [b]ssi_getFollowers[/b] function from [b]SSI.php[/b] to [b]Subs-Followers.php[/b]....
 o Modified [b]SSI.php[/b] to include [b]Subs-Followers.php[/b]...
 o Fixed [b]ssi_getFollowers[/b] function - function is 1st parameter is wrongly inverted
@@ -48,6 +52,7 @@ o Added Portuguese Brazil to the language mix.  No functionality change.  Thanks
 
 [u][b]v1.0 - July 11th, 2014[/b][/u]
 o Initial Release of the Mod
+[/quote]
 
 [hr]
 [url=http://creativecommons.org/licenses/by/3.0][img]http://i.creativecommons.org/l/by/3.0/80x15.png[/img][/url]
