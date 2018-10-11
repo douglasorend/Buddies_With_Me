@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.9[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.10[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -16,9 +16,7 @@ This mod also adds a resync function to the Admin area under [b]Forum Maintenanc
 After installation is successful, the script must call the resync function in order to build the table.  If this does not happen, then the proper results won't be seen.
 
 [color=blue][b][size=12pt][u]Compatibility Notes[/u][/size][/b][/color]
-This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is not and will not be supported!
-
-DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly included in v1.1 and did not include any functionality changes from v1.0 (and 1.0a).  v1.2 fixes this!!!
+This mod was tested on SMF 2.0.9, but should work on SMF 2.1 Beta 1, as well as SMF 2.0 and up.  SMF 1.x is not and will not be supported.
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
 The changelog has been removed and can be seen at [url=http://www.xptsp.com/board/index.php?topic=9.msg134#msg134]XPtsp.com[/url].

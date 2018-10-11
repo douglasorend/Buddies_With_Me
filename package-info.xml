@@ -4,12 +4,12 @@
 	<name>Followers</name>
 	<id>Dougiefresh:Followers</id>
 	<type>modification</type>
-	<version>1.9</version>
+	<version>1.10</version>
 
 	<install for="2.0 - 2.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
 		<database>edit_db.php</database>
-		<modification>install.xml</modification>
+		<modification>install_20x.xml</modification>
 		<modification>language_english.xml</modification>
 		<modification>language_english-utf8.xml</modification>
 		<modification>language_portuguese_brazilian-utf8.xml</modification>
@@ -21,7 +21,31 @@
 		</redirect>		
 	</install>
 	<uninstall for="2.0 - 2.0.99">
-		<modification reverse="true">install.xml</modification>
+		<modification reverse="true">install_20x.xml</modification>
+		<modification reverse="true">language_english.xml</modification>
+		<modification reverse="true">language_english-utf8.xml</modification>
+		<modification reverse="true">language_portuguese_brazilian-utf8.xml</modification>
+		<modification reverse="true">language_portuguese_brazilian.xml</modification>
+		<remove-file name="$sourcedir/Subs-Followers.php" />
+		<remove-file name="$boarddir/Themes/default/Followers.template.php" />
+	</uninstall>
+
+	<install for="2.1 Beta 1">
+		<readme type="file" parsebbc="true">readme.txt</readme>
+		<database>edit_db.php</database>
+		<modification>install_21x.xml</modification>
+		<modification>language_english.xml</modification>
+		<modification>language_english-utf8.xml</modification>
+		<modification>language_portuguese_brazilian-utf8.xml</modification>
+		<modification>language_portuguese_brazilian.xml</modification>
+		<require-file name="Subs-Followers.php" destination="$sourcedir" />
+		<require-file name="Followers.template.php" destination="$boarddir/Themes/default" />
+		<redirect url="index.php?action=admin;area=maintain;sa=members;activity=resyncfollowers" timeout="5000" type="inline">
+			Please wait while you are being redirected so that the followers table is rebuilt.
+		</redirect>		
+	</install>
+	<uninstall for="2.1 Beta 1">
+		<modification reverse="true">install_21x.xml</modification>
 		<modification reverse="true">language_english.xml</modification>
 		<modification reverse="true">language_english-utf8.xml</modification>
 		<modification reverse="true">language_portuguese_brazilian-utf8.xml</modification>

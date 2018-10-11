@@ -1,0 +1,43 @@
+v1.10 - April 6th, 2015
+o Updated for SMF 2.1 Beta 1
+
+v1.9 - January 16th, 2015
+o License change to Simplified BSD.  No functionality change.
+
+v1.8 - November 9th, 2014
+o Updated Brazilian Portuguese language by DSystem.
+
+v1.7 - August 6th, 2014
+o Modified resync code to remove buffering of member's buddies list while Processing....
+o Added some additional input validation code for adding and removing follower functions....
+
+v1.6 - August 4th, 2014
+o Modified SSI function to accept user ID as a parameter # 3....
+
+v1.5 - July 28th, 2014
+o Moved ssi_getFollowers function from SSI.php to Subs-Followers.php....
+o Modified SSI.php to include Subs-Followers.php...
+o Fixed ssi_getFollowers function - function is 1st parameter is wrongly inverted
+o Fixed all dates in the changelog, as they said June instead of July...
+
+v1.4 - July 27th, 2014
+o Modified SSI function ssi_getFollowers to echo out results if changed...
+o Added example code for ssi_getFollowers function in ssi_examples.php...
+
+v1.3 - July 23th, 2014
+o Included SSI function to pull the list of followers
+
+v1.2 - July 21th, 2014
+o Placed the new functions for the Followers into their own seperate file to try to reduce memory requirements.
+
+v1.1 - July 20th, 2014
+o Fixed major issues with resync function
+o Fixed major issue with adding/removing buddies
+o Fixed some minor install issues with the Portuguese Brazil language files.
+o Made some necessary alterations to set my changes off from the core buddy system.
+
+v1.0a - July 17th, 2014
+o Added Portuguese Brazil to the language mix.  No functionality change.  Thanks, DSystem!!
+
+v1.0 - July 11th, 2014
+o Initial Release of the Mod

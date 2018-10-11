@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
-	<name>Followers List</name>
-	<id>Dougiefresh:Followers</id>
-	<version>1.9</version>
+<name>Followers</name>
+<id>Dougiefresh:Followers</id>
+<version>1.10</version>
 
 <!-------------------------------------------------------------------------------->
 <!-- Source Edits                                                               -->

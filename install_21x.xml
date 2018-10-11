@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+<name>Followers</name>
+<id>Dougiefresh:Followers</id>
+<version>1.10</version>
+
+<!-------------------------------------------------------------------------------->
+<!-- Source Edits                                                               -->
+<!-------------------------------------------------------------------------------->
+<file name="$sourcedir/ManageMaintenance.php">
+	<operation>
+		<search position="before"><![CDATA['purgeinactive' => 'MaintainPurgeInactiveMembers',]]></search>
+		<add><![CDATA[
+				'resyncfollowers' => 'ResyncFollowers',]]></add>
+	</operation>
+	<operation>
+		<search position="after"><![CDATA[}
+
+/**
+ * Supporting function for the topics maintenance area.
+ */]]></search>
+		<add><![CDATA[
+	if (isset($_GET['done']) && $_GET['done'] == 'resyncfollowers')
+		$context['maintenance_finished'] = $txt['resyncfollowers_done'];	
+}
+
+// Supporting function for followers table maintanence:
+function ResyncFollowers()
+{
+	global $sourcedir;
+	require_once($sourcedir . '/Subs-Followers.php');
+	ResyncFollowers2();
+]]></add>
+	</operation>
+</file>
+<file name="$sourcedir/Profile.php">
+	<operation>
+		<search position="before"><![CDATA['buddies' => array($txt['editBuddies']),]]></search>
+		<add><![CDATA[
+						'followers' => array($txt['Followers']),]]></add>
+	</operation>
+</file>
+<file name="$sourcedir/Profile-Modify.php">
+	<operation>
+		<search position="before"><![CDATA['tabs' => array(
+			'buddies' => array(),]]></search>
+		<add><![CDATA[
+			'followers' => array(),]]></add>
+	</operation>
+	<operation>
+		<search position="before"><![CDATA[	$subActions = array(
+		'buddies' => array('editBuddies', $txt['editBuddies']),]]></search>
+		<add><![CDATA[
+		'followers' => array('Followers', $txt['Followers']),]]></add>
+	</operation>
+	<operation>
+		<search position="after"><![CDATA[// Can we email the user direct?]]></search>
+		<add><![CDATA[// Include the file we need for the followers stuff...
+	require_once($sourcedir . '/Subs-Followers.php');
+
+	]]></add>
+	</operation>
+	<operation>
+		<search position="after"><![CDATA[
+
+		// Redirect off the page because we don't like all this ugly query stuff to stick in the history.]]></search>
+		<add><![CDATA[
+		removeFollower((int) $_GET['remove']);]]></add>
+	</operation>
+	<operation>
+		<search position="replace"><![CDATA[// Add the new member to the buddies array.
+			while ($row = $smcFunc['db_fetch_assoc']($request))
+				$buddiesArray[] = (int) $row['id_member'];]]></search>
+		<add><![CDATA[// Add the new member to the buddies array.
+			while ($row = $smcFunc['db_fetch_assoc']($request))
+			{
+				$buddiesArray[] = (int) $row['id_member'];
+				addFollower((int) $row['id_member']);
+			}]]></add>
+	</operation>
+</file>
+<file name="$sourcedir/Subs-Members.php">
+	<operation>
+		<search position="before"><![CDATA[function BuddyListToggle()
+{
+	global $user_info]]></search>
+		<add><![CDATA[, $sourcedir]]></add>
+	</operation>
+	<operation>
+		<search position="replace"><![CDATA[// Remove if it's already there...
+	if (in_array($_REQUEST['u'], $user_info['buddies']))
+		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
+	// ...or add if it's not and if it's not you.
+	elseif ($user_info['id'] != $_REQUEST['u'])
+		$user_info['buddies'][] = (int) $_REQUEST['u'];]]></search>
+		<add><![CDATA[// Remove if it's already there...
+	require_once($sourcedir . '/Subs-Followers.php');
+	if (in_array($_REQUEST['u'], $user_info['buddies']))
+	{
+		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
+		removeFollower((int) $_REQUEST['u']);
+	}
+	// ...or add if it's not and if it's not you.
+	elseif ($user_info['id'] != $_REQUEST['u'])
+	{
+		$user_info['buddies'][] = (int) $_REQUEST['u'];
+		addFollower((int) $_REQUEST['u']);
+	}]]></add>
+	</operation>
+</file>
+
+<!-------------------------------------------------------------------------------->
+<!-- Curve PM Template edits (PersonalMessage.template.php)                     -->
+<!-------------------------------------------------------------------------------->
+<file name="$themedir/ManageMaintenance.template.php">
+	<operation>
+	<search position="after"><![CDATA[<h3 class="catbg">', $txt['maintain_recountposts'], '</h3>]]></search>
+	<add><![CDATA[<h3 class="catbg">', $txt['maintain_followers_table'], '</h3>
+		</div>
+		<div class="windowbg2">
+			<form action="', $scripturl, '?action=admin;area=maintain;sa=members;activity=resyncfollowers" method="post" accept-charset="', $context['character_set'], '" id="membersForm">
+				<p><a id="membersLink"></a>', $txt['maintain_followers_table_desc'], '<br/><br/>
+				<span><input type="submit" value="', $txt['maintain_run_now'], '" class="button_submit" /></span>
+				<input type="hidden" name="', $context['session_var'], '" value="', $context['session_id'], '" />
+			</form>
+		</div>
+		<div class="cat_bar">
+			<h3 class="catbg">
+				]]></add>
+	</operation>
+</file>
+
+<!-------------------------------------------------------------------------------->
+<!-- New SSI function for gathering the names of our followers :p (SSI.php)     -->
+<!-------------------------------------------------------------------------------->
+<file name="$boarddir/SSI.php">
+	<operation>
+		<search position="after"><![CDATA[require_once($sourcedir . '/Security.php');]]></search>
+		<add><![CDATA[
+require_once($sourcedir . '/Subs-Followers.php');]]></add>
+	</operation>
+</file>
+<file name="$boarddir/ssi_examples.php">
+	<operation>
+		<search position="before"><![CDATA[<li><a href="#" onclick="showSSIBlock('ssi_whosOnline'); return false;">Who's Online</a></li>]]></search>
+		<add><![CDATA[
+						<li><a href="#" onclick="showSSIBlock('ssi_followers'); return false;">Followers</a></li>]]></add>
+	</operation>
+	<operation>
+		<search position="after"><![CDATA[
+
+<!-- WELCOME, LOGIN AND LOGOUT -->]]></search>
+		<add><![CDATA[
+
+			<div class="ssi_preview" id="ssi_followers">
+				<h2>SSI Get Followers Function</h2>
+				<p>This function shows which users are buddies with you.</p>
+
+				<h3>Code</h3>
+				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
+				<h3>Returned array</h3>
+				<div class="ssi_result"><?php ssi_getFollowers(); flush(); ?></div>
+
+				<h2>Getting a String of Followers</h2>
+				<p>This function can be used to create a string listing all of your followers.</p>
+
+				<h3>Code</h3>
+				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
+				<h3>Result</h3>
+				<div class="ssi_result"><?php ssi_getFollowers(); ?></div>
+			</div>]]></add>
+	</operation>
+</file>
+
+</modification>
