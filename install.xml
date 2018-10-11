@@ -26,86 +26,9 @@
 // Supporting function for followers table maintanence:
 function ResyncFollowers()
 {
-	global $smcFunc;
-	
-	// Dump the contents of the followers table ONLY if we aren't starting from the beginning:
-	$time = time();
-	$pos = empty($_REQUEST['pos']) ? 1 : (int) $_REQUEST['pos'];
-	if ($pos == 1)
-		$request = $smcFunc['db_query']('', '
-			TRUNCATE TABLE {db_prefix}followers');
-
-	// Figure out how many members we have:
-	$request = $smcFunc['db_query']('', '
-		SELECT COUNT(*) AS total
-		FROM {db_prefix}members'
-	);
-	$row = $smcFunc['db_fetch_assoc']($request);
-	$smcFunc['db_free_result']($request);
-	$max = $row['total'];
-
-	// Process EVERYBODY's buddy list:
-	$request = $smcFunc['db_query']('', '
-		SELECT id_member, buddy_list
-		FROM {db_prefix}members
-		ORDER BY id_member
-		LIMIT {int:start}, {int:top}',
-		array(
-			'start' => (int) $pos - 1,
-			'top' => (int) $max,
-		)
-	);
-	$count = 0;
-	$followers = array();
-	while ($row = $smcFunc['db_fetch_assoc']($request))
-	{
-		$pos++;
-		if (!empty($row['buddy_list']))
-		{
-			// Process this member's buddy list for the array:
-			$list = explode(',', $row['buddy_list']);
-			foreach ($list as $buddy)
-				$followers[] = array($row['id_member'], $buddy);
-
-			// Are we at the end of members OR hit the 100th member?
-			if (($pos % 100) == 0 || $pos == $max)
-			{
-				// Dump the array to the followers table:
-				if (!empty($followers))
-					$smcFunc['db_insert']('replace',
-						'{db_prefix}followers',
-						array('id_member' => 'int', 'follows' => 'text'),
-						$followers,
-						array('id_member', 'follows')
-					);
-				$followers = array();
-			}
-		}
-				
-		// Are we over the 10-second mark?
-		if (time() > $time + 10)
-		{
-			// Dump the array to the followers table:
-			if (!empty($followers))
-				$smcFunc['db_insert']('replace',
-					'{db_prefix}followers',
-					array('id_member' => 'int', 'follows' => 'text'),
-					$followers,
-					array('id_member', 'follows')
-				);
-				
-			// Setup everything for the next run:
-			$context['sub_template'] = 'not_done';
-			$context['continue_percent'] = (int) (($pos / $max) * 100);
-			$context['continue_get_data'] = 'action=admin;area=maintain;sa=members;sa=resyncfollowers;pos=' . $pos .  ';' . $context['session_var'] . '=' . $context['session_id'];
-			break;
-		}
-	}
-	$smcFunc['db_free_result']($request);
-
-	// If we haven't gone past the 10-second mark, redirect properly:
-	if (time() <= $time + 10)
-		redirectexit('action=admin;area=maintain;sa=members;done=resyncfollowers');
+	global $sourcedir;
+	require_once($sourcedir . '/Subs-Followers.php');
+	ResyncFollowers2();
 }
 
 // Supporting function for the topics maintenance area.]]></add>
@@ -132,6 +55,13 @@ function ResyncFollowers()
 		'followers' => array('Followers', $txt['Followers']),]]></add>
 	</operation>
 	<operation>
+		<search position="after"><![CDATA[// Can we email the user direct?]]></search>
+		<add><![CDATA[// Include the file we need for the followers stuff...
+	require_once($sourcedir . '/Subs-Followers.php');
+
+	]]></add>
+	</operation>
+	<operation>
 		<search position="after"><![CDATA[
 
 		// Redirect off the page because we don't like all this ugly query stuff to stick in the history.]]></search>
@@ -149,82 +79,13 @@ function ResyncFollowers()
 				addFollower((int) $row['id_member']);
 			}]]></add>
 	</operation>
-	<operation>
-		<search position="after"><![CDATA[// Allows the user to view their ignore list, as well as the option to manage members on it.]]></search>
-		<add><![CDATA[// BEGIN: Followers List
-function Followers()
-{
-	global $smcFunc, $memberContext, $user_info, $context;
-
-	// Get all the users "buddies"...
-	$buddies = array();
-	$result = $smcFunc['db_query']('', '
-		SELECT f.id_member
-		FROM {db_prefix}followers AS f
-		INNER JOIN {db_prefix}members AS m ON (f.id_member = m.id_member)
-		WHERE f.follows = {int:user_id}
-			AND m.is_activated < 10',
-		array(
-			'user_id' => (int) $user_info['id'],
-		)
-	);
-	while ($row = $smcFunc['db_fetch_assoc']($result))
-		$buddies[] = $row['id_member'];
-	$smcFunc['db_free_result']($result);
-
-	$context['buddy_count'] = count($buddies);
-
-	// Load all the members up.
-	loadMemberData($buddies, false, 'profile');
-
-	// Setup the context for each buddy.
-	$context['followers'] = array();
-	foreach ($buddies as $buddy)
-	{
-		loadMemberContext($buddy);
-		$context['followers'][$buddy] = $memberContext[$buddy];
-	}
-}
-
-// Remove user in question from the followers table:
-function removeFollower($user_id)
-{
-	global $smcFunc, $user_info;
-
-	$smcFunc['db_query']('', '
-		DELETE FROM {db_prefix}followers
-		WHERE id_member = {int:user_id}
-			AND follows = {int:follows}',
-		array(
-			'user_id' => (int) $user_info['id'],
-			'follows' => $user_id,
-		)
-	);
-}
-
-// Add user in question to the followers table:
-function addFollower($user_id)
-{
-	global $smcFunc, $user_info;
-
-	$smcFunc['db_insert']('replace',
-		'{db_prefix}followers',
-		array('id_member' => 'int', 'follows' => 'text'),
-		array($user_info['id'], $user_id),
-		array('id_member', 'follows')
-	);
-}
-// END: Followers List
-
-]]></add>
-	</operation>
 </file>
 <file name="$sourcedir/Subs-Members.php">
 	<operation>
 		<search position="before"><![CDATA[function BuddyListToggle()
 {
 	global $user_info]]></search>
-		<add><![CDATA[, $sourcedir;]]></add>
+		<add><![CDATA[, $sourcedir]]></add>
 	</operation>
 	<operation>
 		<search position="replace"><![CDATA[// Remove if it's already there...
@@ -234,17 +95,17 @@ function addFollower($user_id)
 	elseif ($user_info['id'] != $_REQUEST['u'])
 		$user_info['buddies'][] = (int) $_REQUEST['u'];]]></search>
 		<add><![CDATA[// Remove if it's already there...
-	require_once($sourcedir . '/Profile-Modify.php');
+	require_once($sourcedir . '/Subs-Followers.php');
 	if (in_array($_REQUEST['u'], $user_info['buddies']))
 	{
 		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
-		removeFollower($_REQUEST['u']);
+		removeFollower((int) $_REQUEST['u']);
 	}
 	// ...or add if it's not and if it's not you.
 	elseif ($user_info['id'] != $_REQUEST['u'])
 	{
 		$user_info['buddies'][] = (int) $_REQUEST['u'];
-		addFollower($_REQUEST['u']);
+		addFollower((int) $_REQUEST['u']);
 	}]]></add>
 	</operation>
 </file>
@@ -252,63 +113,6 @@ function addFollower($user_id)
 <!-------------------------------------------------------------------------------->
 <!-- Curve PM Template edits (PersonalMessage.template.php)                     -->
 <!-------------------------------------------------------------------------------->
-<file name="$themedir/Profile.template.php">
-	<operation>
-		<search position="after"><![CDATA[// Template for showing the ignore list of the current user.]]></search>
-		<add><![CDATA[// Template for showing the follower list of the current user.
-function template_Followers()
-{
-	global $context, $settings, $options, $scripturl, $modSettings, $txt;
-
-	echo '
-		<div class="title_bar">
-			<h3 class="titlebg">
-				<span class="ie6_header floatleft"><img src="', $settings['images_url'], '/icons/online.gif" alt="" class="icon" />', $txt['Followers_List'], '</span>
-			</h3>
-		</div>
-		<table border="0" width="100%" cellspacing="1" cellpadding="4" class="table_grid" align="center">
-			<tr class="catbg">
-				<th class="first_th lefttext" scope="col" width="20%">', $txt['name'], '</th>
-				<th scope="col">', $txt['status'], '</th>
-				<th scope="col">', $txt['email'], '</th>
-				<th scope="col">', $txt['icq'], '</th>
-				<th scope="col">', $txt['aim'], '</th>
-				<th scope="col">', $txt['yim'], '</th>
-				<th scope="col">', $txt['msn'], '</th>
-			</tr>';
-
-	// If they don't have any followers don't list them!
-	if (empty($context['followers']))
-		echo '
-			<tr class="windowbg2">
-				<td colspan="8" align="center"><strong>', $txt['Followers_Nobody'], '</strong></td>
-			</tr>';
-
-	// Now loop through each follower showing info on each.
-	$alternate = false;
-	foreach ($context['followers'] as $follower)
-	{
-		echo '
-			<tr class="', $alternate ? 'windowbg' : 'windowbg2', '">
-				<td>', $follower['link'], '</td>
-				<td align="center"><a href="', $follower['online']['href'], '"><img src="', $follower['online']['image_href'], '" alt="', $follower['online']['label'], '" title="', $follower['online']['label'], '" /></a></td>
-				<td align="center">', ($follower['show_email'] == 'no' ? '' : '<a href="' . $scripturl . '?action=emailuser;sa=email;uid=' . $follower['id'] . '" rel="nofollow"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . ' ' . $follower['name'] . '" /></a>'), '</td>
-				<td align="center">', $follower['icq']['link'], '</td>
-				<td align="center">', $follower['aim']['link'], '</td>
-				<td align="center">', $follower['yim']['link'], '</td>
-				<td align="center">', $follower['msn']['link'], '</td>
-			</tr>';
-
-		$alternate = !$alternate;
-	}
-
-	echo '
-		</table>';
-}
-
-]]></add>
-	</operation>
-</file>
 <file name="$themedir/ManageMaintenance.template.php">
 	<operation>
 	<search position="after"><![CDATA[<span class="botslice"><span></span></span>

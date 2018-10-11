@@ -4,7 +4,7 @@
 	<name>Followers</name>
 	<id>Dougiefresh:Followers</id>
 	<type>modification</type>
-	<version>1.1</version>
+	<version>1.2</version>
 
 	<install for="2.0 - 2.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
@@ -14,6 +14,8 @@
 		<modification>language_english-utf8.xml</modification>
 		<modification>language_portuguese_brazilian-utf8.xml</modification>
 		<modification>language_portuguese_brazilian.xml</modification>
+		<require-file name="Subs-Followers.php" destination="$sourcedir" />
+		<require-file name="Followers.template.php" destination="$boarddir/Themes/default" />
 		<redirect url="index.php?action=admin;area=maintain;sa=members;activity=resyncfollowers" timeout="5000" />
 	</install>
 	<uninstall for="2.0 - 2.0.99">
@@ -22,10 +24,7 @@
 		<modification reverse="true">language_english-utf8.xml</modification>
 		<modification reverse="true">language_portuguese_brazilian-utf8.xml</modification>
 		<modification reverse="true">language_portuguese_brazilian.xml</modification>
+		<remove-file name="$sourcedir/Subs-Followers.php" />
+		<remove-file name="$boarddir/Themes/default/Followers.template.php" />
 	</uninstall>
-	
-	<upgrade from="1.0">
-		<modification>language_portuguese_brazilian-utf8.xml</modification>
-		<modification>language_portuguese_brazilian.xml</modification>
-	</upgrade>
 </package-info>
