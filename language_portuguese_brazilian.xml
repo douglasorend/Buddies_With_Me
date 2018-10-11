@@ -10,7 +10,7 @@
 <!-------------------------------------------------------------------------->
 <file name="$themedir/languages/Profile.portuguese_brazilian.php" error="skip">
 	<operation>
-		<search position="after"><![CDATA[$txt['no_profile_edit'] = 'Você não tem permissão para alterar o perfil dessa pessoa.';]]></search>
+		<search position="end" />
 		<add><![CDATA[$txt['Followers'] = 'Seguidores';
 $txt['Followers_List'] = 'Listagem de seguidores (Usuários que lhe adicionaram como amigos.)';
 $txt['Followers_Nobody'] = 'Ninguém está te seguindo.';

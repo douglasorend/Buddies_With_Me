@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.7[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.8[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -22,6 +22,9 @@ DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly include
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
 [quote]
+[u][b]v1.8 - November 9th, 2014[/b][/u]
+o Updated Brazilian Portuguese language by DSystem.
+
 [u][b]v1.7 - August 6th, 2014[/b][/u]
 o Modified resync code to remove buffering of member's buddies list while processing....
 o Added some additional input validation code for adding and removing follower functions....

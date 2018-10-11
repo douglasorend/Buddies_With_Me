@@ -10,7 +10,7 @@
 <!-------------------------------------------------------------------------->
 <file name="$themedir/languages/Profile.portuguese_brazilian-utf8.php" error="skip">
 	<operation>
-		<search position="after"><![CDATA[$txt['no_profile_edit'] = 'Voc&ecirc; n&atilde;o tem permissão para alterar o perfil dessa pessoa.';]]></search>
+		<search position="end" />
 		<add><![CDATA[$txt['Followers'] = 'Seguidores';
 $txt['Followers_List'] = 'Listagem de seguidores (Usu&aacute;rios que lhe adicionaram como amigos.)';
 $txt['Followers_Nobody'] = 'Ningu&eacute;m est&aacute; te seguindo.';
@@ -20,7 +20,7 @@ $txt['Followers_Nobody'] = 'Ningu&eacute;m est&aacute; te seguindo.';
 </file>
 <file name="$themedir/languages/ManageMaintenance.portuguese_brazilian-utf8.php" error="skip">
 	<operation>
-		<search position="after"><![CDATA[$txt['repair_zero_ids'] = 'T&oacute;picos encontrados e/ou mensagens com t&oacute;pico ou mensagem IDs de 0.';]]></search>
+		<search position="end" />
 		<add><![CDATA[$txt['maintain_followers_table'] = 'Nova sincroniza&ccedil;&atilde;o da Tabela de Seguidores';
 $txt['maintain_followers_table_desc'] = 'Se a tabela de seguidores se tornar incorreta: esta fun&ccedil;&atilde;o ir&aacute; reconstruir a tabela.';
 $txt['resyncfollowers_done'] = 'Tabela de seguidores sincronizada';
