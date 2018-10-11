@@ -137,7 +137,7 @@ function BWM_get_count()
 {
 	global $smcFunc, $user_info;
 
-	$request = $smcFunc['db_query']('', '
+	$result = $smcFunc['db_query']('', '
 		SELECT COUNT(*)
 		FROM {db_prefix}buddies AS b
 			INNER JOIN {db_prefix}members AS m ON (b.id_member = m.id_member)
@@ -147,8 +147,8 @@ function BWM_get_count()
 			'user_id' => (int) $user_info['id'],
 		)
 	);
-	list ($count) = $smcFunc['db_fetch_row']($request);
-	$smcFunc['db_free_result']($request);
+	list ($count) = $smcFunc['db_fetch_row']($result);
+	$smcFunc['db_free_result']($result);
 	return $count;
 }
 
@@ -223,7 +223,7 @@ function BWM_Add($dest_id)
 	global $smcFunc, $user_info;
 
 	// Get how many times the "user id/buddy id" has been stored:
-	$smcFunc['db_query']('', '
+	$result = $smcFunc['db_query']('', '
 		SELECT COUNT(id_member) AS count
 		FROM {db_prefix}buddies
 		WHERE id_member = {int:user_id}
@@ -233,8 +233,8 @@ function BWM_Add($dest_id)
 			'is_buddies_with' => (int) $dest_id,
 		)
 	);
-	$row = $smcFunc['db_fetch_assoc']($request);
-	$smcFunc['db_free_result']($request);
+	$row = $smcFunc['db_fetch_assoc']($result);
+	$smcFunc['db_free_result']($result);
 	
 	// If we can't find an instance, then store it in the table:
 	if (empty($row['count']))
@@ -259,20 +259,20 @@ function BWM_Resync2()
 	$time = time();
 	$pos = empty($_REQUEST['pos']) ? 1 : (int) $_REQUEST['pos'];
 	if ($pos == 1)
-		$request = $smcFunc['db_query']('', '
+		$result = $smcFunc['db_query']('', '
 			TRUNCATE TABLE {db_prefix}buddies');
 
 	// Figure out how many members we have:
-	$request = $smcFunc['db_query']('', '
+	$result = $smcFunc['db_query']('', '
 		SELECT COUNT(*) AS total
 		FROM {db_prefix}members'
 	);
-	$row = $smcFunc['db_fetch_assoc']($request);
-	$smcFunc['db_free_result']($request);
+	$row = $smcFunc['db_fetch_assoc']($result);
+	$smcFunc['db_free_result']($result);
 	$max = $row['total'];
 
 	// Process EVERYBODY's buddy list:
-	$request = $smcFunc['db_query']('', '
+	$result = $smcFunc['db_query']('', '
 		SELECT id_member, buddy_list
 		FROM {db_prefix}members
 		ORDER BY id_member
@@ -284,7 +284,7 @@ function BWM_Resync2()
 	);
 	$count = 0;
 	$buddies = array();
-	while ($row = $smcFunc['db_fetch_assoc']($request))
+	while ($row = $smcFunc['db_fetch_assoc']($result))
 	{
 		$pos++;
 		if (!empty($row['buddy_list']))
@@ -317,7 +317,7 @@ function BWM_Resync2()
 			break;
 		}
 	}
-	$smcFunc['db_free_result']($request);
+	$smcFunc['db_free_result']($result);
 
 	// If we haven't gone past the 10-second mark, redirect properly:
 	if (time() <= $time + 10)

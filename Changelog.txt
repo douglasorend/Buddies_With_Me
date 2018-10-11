@@ -1,3 +1,6 @@
+v2.1 - September 21st, 2015
+o Fixed issue where variable used was null instead of database handle. 
+
 v2.0 September 5th, 2015
 o IMPORTANT: Name changed from "Followers" to "Buddies With Me"!
 o Fixed issue where mod generated duplicate entries within the table.
