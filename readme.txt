@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.0[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.0a[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -19,6 +19,9 @@ After installation is successful, the script must call the resync function in or
 This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is not and will not be supported!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
+[u][b]v1.0a - June 17th, 2014[/b][/u]
+o Added Portuguese Brazil to the language mix.  No functionality change.  Thanks, [url=http://www.simplemachines.org/community/index.php?action=profile;u=341618]DSystem[/url]!!
+
 [u][b]v1.0 - June 11th, 2014[/b][/u]
 o Initial Release of the Mod
 

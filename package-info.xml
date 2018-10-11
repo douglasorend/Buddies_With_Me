@@ -4,7 +4,7 @@
 	<name>Followers</name>
 	<id>Dougiefresh:Followers</id>
 	<type>modification</type>
-	<version>1.0</version>
+	<version>1.0a</version>
 
 	<install for="2.0 - 2.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
@@ -12,11 +12,20 @@
 		<modification>install.xml</modification>
 		<modification>language_english.xml</modification>
 		<modification>language_english-utf8.xml</modification>
+		<modification>language_portuguese_brazilian-utf8.xml</modification>
+		<modification>language_portuguese_brazilian.xml</modification>
 		<redirect url="index.php?action=admin;area=maintain;sa=members;activity=resyncfollowers" timeout="5000" />
 	</install>
 	<uninstall for="2.0 - 2.0.99">
 		<modification reverse="true">install.xml</modification>
 		<modification reverse="true">language_english.xml</modification>
 		<modification reverse="true">language_english-utf8.xml</modification>
+		<modification reverse="true">language_portuguese_brazilian-utf8.xml</modification>
+		<modification reverse="true">language_portuguese_brazilian.xml</modification>
 	</uninstall>
+	
+	<upgrade from="1.0">
+		<modification>language_portuguese_brazilian-utf8.xml</modification>
+		<modification>language_portuguese_brazilian.xml</modification>
+	</upgrade>
 </package-info>
