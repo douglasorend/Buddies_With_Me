@@ -24,8 +24,8 @@ function template_Followers()
 				<th scope="col">', $txt['email'], '</th>
 				<th scope="col">', $txt['icq'], '</th>
 				<th scope="col">', $txt['aim'], '</th>
-				<th scope="col">', $txt['yim'], '</th>
-				<th scope="col">', $txt['msn'], '</th>
+				<th scope="col">', $txt['yim'], '</th>' . (isset($txt['msn']) ? '
+				<th scope="col">', $txt['msn'], '</th>' : '') . '
 			</tr>';
 
 	// If they don't have any followers don't list them!
@@ -46,8 +46,8 @@ function template_Followers()
 				<td align="center">', ($follower['show_email'] == 'no' ? '' : '<a href="' . $scripturl . '?action=emailuser;sa=email;uid=' . $follower['id'] . '" rel="nofollow"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . ' ' . $follower['name'] . '" /></a>'), '</td>
 				<td align="center">', $follower['icq']['link'], '</td>
 				<td align="center">', $follower['aim']['link'], '</td>
-				<td align="center">', $follower['yim']['link'], '</td>
-				<td align="center">', $follower['msn']['link'], '</td>
+				<td align="center">', $follower['yim']['link'], '</td>' . (isset($txt['msn']) ? '
+				<td align="center">', $follower['msn']['link'], '</td>' : '') . '
 			</tr>';
 
 		$alternate = !$alternate;

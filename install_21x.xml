@@ -3,7 +3,7 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
 <name>Followers</name>
 <id>Dougiefresh:Followers</id>
-<version>1.10</version>
+<version>1.11</version>
 
 <!-------------------------------------------------------------------------------->
 <!-- Source Edits                                                               -->
@@ -43,6 +43,12 @@ function ResyncFollowers()
 </file>
 <file name="$sourcedir/Profile-Modify.php">
 	<operation>
+		<search position="before"><![CDATA[function editBuddyIgnoreLists($memID)
+{
+	global $context, $txt, $modSettings]]></search>
+		<add><![CDATA[, $sourcedir]]></add>
+	</operation>
+	<operation>
 		<search position="before"><![CDATA['tabs' => array(
 			'buddies' => array(),]]></search>
 		<add><![CDATA[
@@ -71,13 +77,21 @@ function ResyncFollowers()
 	<operation>
 		<search position="replace"><![CDATA[// Add the new member to the buddies array.
 			while ($row = $smcFunc['db_fetch_assoc']($request))
-				$buddiesArray[] = (int) $row['id_member'];]]></search>
+			{
+				if (in_array($row['id_member'], $buddiesArray))
+					continue;
+				else
+					$buddiesArray[] = (int) $row['id_member'];]]></search>
 		<add><![CDATA[// Add the new member to the buddies array.
 			while ($row = $smcFunc['db_fetch_assoc']($request))
 			{
-				$buddiesArray[] = (int) $row['id_member'];
-				addFollower((int) $row['id_member']);
-			}]]></add>
+				if (in_array($row['id_member'], $buddiesArray))
+					continue;
+				else
+				{
+					$buddiesArray[] = (int) $row['id_member'];
+					addFollower((int) $row['id_member']);
+				}]]></add>
 	</operation>
 </file>
 <file name="$sourcedir/Subs-Members.php">
@@ -89,24 +103,26 @@ function ResyncFollowers()
 	</operation>
 	<operation>
 		<search position="replace"><![CDATA[// Remove if it's already there...
-	if (in_array($_REQUEST['u'], $user_info['buddies']))
-		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
+	if (in_array($userReceiver, $user_info['buddies']))
+		$user_info['buddies'] = array_diff($user_info['buddies'], array($userReceiver));
+
 	// ...or add if it's not and if it's not you.
-	elseif ($user_info['id'] != $_REQUEST['u'])
-		$user_info['buddies'][] = (int) $_REQUEST['u'];]]></search>
+	elseif ($user_info['id'] != $userReceiver)
+	{
+		$user_info['buddies'][] = $userReceiver;]]></search>
 		<add><![CDATA[// Remove if it's already there...
 	require_once($sourcedir . '/Subs-Followers.php');
-	if (in_array($_REQUEST['u'], $user_info['buddies']))
+	if (in_array($userReceiver, $user_info['buddies']))
 	{
-		$user_info['buddies'] = array_diff($user_info['buddies'], array($_REQUEST['u']));
+		$user_info['buddies'] = array_diff($user_info['buddies'], array($userReceiver));
 		removeFollower((int) $_REQUEST['u']);
 	}
+
 	// ...or add if it's not and if it's not you.
-	elseif ($user_info['id'] != $_REQUEST['u'])
+	elseif ($user_info['id'] != $userReceiver)
 	{
-		$user_info['buddies'][] = (int) $_REQUEST['u'];
-		addFollower((int) $_REQUEST['u']);
-	}]]></add>
+		$user_info['buddies'][] = $userReceiver;
+		addFollower((int) $_REQUEST['u']);]]></add>
 	</operation>
 </file>
 
