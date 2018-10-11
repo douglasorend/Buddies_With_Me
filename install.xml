@@ -30,8 +30,8 @@ function ResyncFollowers()
 	
 	// Dump the contents of the followers table ONLY if we aren't starting from the beginning:
 	$time = time();
-	$pos = empty($_REQUEST['pos']) ? 0 : (int) $_REQUEST['pos'];
-	if ($pos == 0)
+	$pos = empty($_REQUEST['pos']) ? 1 : (int) $_REQUEST['pos'];
+	if ($pos == 1)
 		$request = $smcFunc['db_query']('', '
 			TRUNCATE TABLE {db_prefix}followers');
 
@@ -51,25 +51,24 @@ function ResyncFollowers()
 		ORDER BY id_member
 		LIMIT {int:start}, {int:top}',
 		array(
-			'start' => (int) $pos,
+			'start' => (int) $pos - 1,
 			'top' => (int) $max,
 		)
 	);
 	$count = 0;
+	$followers = array();
 	while ($row = $smcFunc['db_fetch_assoc']($request))
 	{
-		$count++;
 		$pos++;
 		if (!empty($row['buddy_list']))
 		{
 			// Process this member's buddy list for the array:
 			$list = explode(',', $row['buddy_list']);
-			$followers = array();
 			foreach ($list as $buddy)
 				$followers[] = array($row['id_member'], $buddy);
 
 			// Are we at the end of members OR hit the 100th member?
-			if (($count % 100) == 0 || $pos == $max)
+			if (($pos % 100) == 0 || $pos == $max)
 			{
 				// Dump the array to the followers table:
 				if (!empty($followers))
@@ -179,11 +178,11 @@ function Followers()
 	loadMemberData($buddies, false, 'profile');
 
 	// Setup the context for each buddy.
-	$context['buddies'] = array();
+	$context['followers'] = array();
 	foreach ($buddies as $buddy)
 	{
 		loadMemberContext($buddy);
-		$context['buddies'][$buddy] = $memberContext[$buddy];
+		$context['followers'][$buddy] = $memberContext[$buddy];
 	}
 }
 
@@ -193,7 +192,7 @@ function removeFollower($user_id)
 	global $smcFunc, $user_info;
 
 	$smcFunc['db_query']('', '
-		DELETE {db_prefix}followers
+		DELETE FROM {db_prefix}followers
 		WHERE id_member = {int:user_id}
 			AND follows = {int:follows}',
 		array(
@@ -221,6 +220,12 @@ function addFollower($user_id)
 	</operation>
 </file>
 <file name="$sourcedir/Subs-Members.php">
+	<operation>
+		<search position="before"><![CDATA[function BuddyListToggle()
+{
+	global $user_info]]></search>
+		<add><![CDATA[, $sourcedir;]]></add>
+	</operation>
 	<operation>
 		<search position="replace"><![CDATA[// Remove if it's already there...
 	if (in_array($_REQUEST['u'], $user_info['buddies']))
@@ -272,26 +277,26 @@ function template_Followers()
 				<th scope="col">', $txt['msn'], '</th>
 			</tr>';
 
-	// If they don't have any buddies don't list them!
-	if (empty($context['buddies']))
+	// If they don't have any followers don't list them!
+	if (empty($context['followers']))
 		echo '
 			<tr class="windowbg2">
 				<td colspan="8" align="center"><strong>', $txt['Followers_Nobody'], '</strong></td>
 			</tr>';
 
-	// Now loop through each buddy showing info on each.
+	// Now loop through each follower showing info on each.
 	$alternate = false;
-	foreach ($context['buddies'] as $buddy)
+	foreach ($context['followers'] as $follower)
 	{
 		echo '
 			<tr class="', $alternate ? 'windowbg' : 'windowbg2', '">
-				<td>', $buddy['link'], '</td>
-				<td align="center"><a href="', $buddy['online']['href'], '"><img src="', $buddy['online']['image_href'], '" alt="', $buddy['online']['label'], '" title="', $buddy['online']['label'], '" /></a></td>
-				<td align="center">', ($buddy['show_email'] == 'no' ? '' : '<a href="' . $scripturl . '?action=emailuser;sa=email;uid=' . $buddy['id'] . '" rel="nofollow"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . ' ' . $buddy['name'] . '" /></a>'), '</td>
-				<td align="center">', $buddy['icq']['link'], '</td>
-				<td align="center">', $buddy['aim']['link'], '</td>
-				<td align="center">', $buddy['yim']['link'], '</td>
-				<td align="center">', $buddy['msn']['link'], '</td>
+				<td>', $follower['link'], '</td>
+				<td align="center"><a href="', $follower['online']['href'], '"><img src="', $follower['online']['image_href'], '" alt="', $follower['online']['label'], '" title="', $follower['online']['label'], '" /></a></td>
+				<td align="center">', ($follower['show_email'] == 'no' ? '' : '<a href="' . $scripturl . '?action=emailuser;sa=email;uid=' . $follower['id'] . '" rel="nofollow"><img src="' . $settings['images_url'] . '/email_sm.gif" alt="' . $txt['email'] . '" title="' . $txt['email'] . ' ' . $follower['name'] . '" /></a>'), '</td>
+				<td align="center">', $follower['icq']['link'], '</td>
+				<td align="center">', $follower['aim']['link'], '</td>
+				<td align="center">', $follower['yim']['link'], '</td>
+				<td align="center">', $follower['msn']['link'], '</td>
 			</tr>';
 
 		$alternate = !$alternate;

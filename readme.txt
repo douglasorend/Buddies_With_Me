@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.0a[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.1[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -19,6 +19,12 @@ After installation is successful, the script must call the resync function in or
 This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is not and will not be supported!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
+[u][b]v1.1 - June 20th, 2014[/b][/u]
+o Fixed major issues with resync function
+o Fixed major issue with adding/removing buddies
+o Fixed some minor install issues with the Portuguese Brazil language files.
+o Made some necessary alterations to set my changes off from the core buddy system.
+
 [u][b]v1.0a - June 17th, 2014[/b][/u]
 o Added Portuguese Brazil to the language mix.  No functionality change.  Thanks, [url=http://www.simplemachines.org/community/index.php?action=profile;u=341618]DSystem[/url]!!
 

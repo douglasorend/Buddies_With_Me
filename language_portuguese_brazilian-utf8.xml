@@ -7,7 +7,7 @@
 <!-------------------------------------------------------------------------->
 <!-- Language file edits (English - Profile & ManageMaintenance)          -->
 <!-------------------------------------------------------------------------->
-<file name="$themedir/languages/Profile.portuguese_brazilian-utf8.php">
+<file name="$themedir/languages/Profile.portuguese_brazilian-utf8.php" error="skip">
 	<operation>
 		<search position="after"><![CDATA[$txt['no_profile_edit'] = 'Voc&ecirc; n&atilde;o tem permissão para alterar o perfil dessa pessoa.';]]></search>
 		<add><![CDATA[$txt['Followers'] = 'Seguidores';
@@ -17,7 +17,7 @@ $txt['Followers_Nobody'] = 'Ningu&eacute;m est&aacute; te seguindo.';
 ]]></add>
 	</operation>
 </file>
-<file name="$themedir/languages/ManageMaintenance.portuguese_brazilian-utf8.php">
+<file name="$themedir/languages/ManageMaintenance.portuguese_brazilian-utf8.php" error="skip">
 	<operation>
 		<search position="after"><![CDATA[$txt['repair_zero_ids'] = 'T&oacute;picos encontrados e/ou mensagens com t&oacute;pico ou mensagem IDs de 0.';]]></search>
 		<add><![CDATA[$txt['maintain_followers_table'] = 'Nova sincroniza&ccedil;&atilde;o da Tabela de Seguidores';
