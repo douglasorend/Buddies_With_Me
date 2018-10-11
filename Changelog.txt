@@ -1,3 +1,7 @@
+v2.2 - October 11th, 2018
+o No functionality change.
+o Updated documentation to point to new website.
+
 v2.1 - September 21st, 2015
 o Fixed issue where variable used was null instead of database handle. 
 
