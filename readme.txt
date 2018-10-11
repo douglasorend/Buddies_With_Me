@@ -1,5 +1,5 @@
 [hr]
-[center][color=red][size=16pt][b]FOLLOWERS v1.8[/b][/size][/color]
+[center][color=red][size=16pt][b]FOLLOWERS v1.9[/b][/size][/color]
 [url=http://www.simplemachines.org/community/index.php?action=profile;u=253913][b]By Dougiefresh[/b][/url] - [url=http://custom.simplemachines.org/mods/index.php?mod=3894]Link to Mod[/url]
 [/center]
 [hr]
@@ -21,46 +21,16 @@ This mod was tested on SMF 2.0.8, and may work on SMF 2.0 and later.  SMF 1.x is
 DO NOT attempt to uninstall v1.1!!  Upgrade capabilities were mistakenly included in v1.1 and did not include any functionality changes from v1.0 (and 1.0a).  v1.2 fixes this!!!
 
 [color=blue][b][size=12pt][u]Changelog[/u][/size][/b][/color]
-[quote]
-[u][b]v1.8 - November 9th, 2014[/b][/u]
-o Updated Brazilian Portuguese language by DSystem.
+The changelog has been removed and can be seen at [url=http://www.xptsp.com/board/index.php?topic=9.msg134#msg134]XPtsp.com[/url].
 
-[u][b]v1.7 - August 6th, 2014[/b][/u]
-o Modified resync code to remove buffering of member's buddies list while processing....
-o Added some additional input validation code for adding and removing follower functions....
+[color=blue][b][size=12pt][u]License[/u][/size][/b][/color]
+Copyright (c) 2015, Douglas Orend
+All rights reserved.
 
-[u][b]v1.6 - August 4th, 2014[/b][/u]
-o Modified SSI function to accept user ID as a parameter # 3....
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-[u][b]v1.5 - July 28th, 2014[/b][/u]
-o Moved [b]ssi_getFollowers[/b] function from [b]SSI.php[/b] to [b]Subs-Followers.php[/b]....
-o Modified [b]SSI.php[/b] to include [b]Subs-Followers.php[/b]...
-o Fixed [b]ssi_getFollowers[/b] function - function is 1st parameter is wrongly inverted
-o Fixed all dates in the changelog, as they said June instead of July...
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 
-[u][b]v1.4 - July 27th, 2014[/b][/u]
-o Modified SSI function [b]ssi_getFollowers[/b] to echo out results if changed...
-o Added example code for [b]ssi_getFollowers[/b] function in [b]ssi_examples.php[/b]...
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
-[u][b]v1.3 - July 23th, 2014[/b][/u]
-o Included SSI function to pull the list of followers
-
-[u][b]v1.2 - July 21th, 2014[/b][/u]
-o Placed the new functions for the Followers into their own seperate file to try to reduce memory requirements.
-
-[u][b]v1.1 - July 20th, 2014[/b][/u]
-o Fixed major issues with resync function
-o Fixed major issue with adding/removing buddies
-o Fixed some minor install issues with the Portuguese Brazil language files.
-o Made some necessary alterations to set my changes off from the core buddy system.
-
-[u][b]v1.0a - July 17th, 2014[/b][/u]
-o Added Portuguese Brazil to the language mix.  No functionality change.  Thanks, [url=http://www.simplemachines.org/community/index.php?action=profile;u=341618]DSystem[/url]!!
-
-[u][b]v1.0 - July 11th, 2014[/b][/u]
-o Initial Release of the Mod
-[/quote]
-
-[hr]
-[url=http://creativecommons.org/licenses/by/3.0][img]http://i.creativecommons.org/l/by/3.0/80x15.png[/img][/url]
-This work is licensed under a [url=http://creativecommons.org/licenses/by/3.0]Creative Commons Attribution 3.0 Unported License[/url]
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
