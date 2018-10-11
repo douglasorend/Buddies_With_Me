@@ -159,4 +159,32 @@ function addFollower($user_id)
 	);
 }
 
+// Gets the whole followers list.
+function ssi_getFollowers($include_banned = false, $output_method = 'echo')
+{
+	global $smcFunc, $user_info, $scripturl;
+
+	$request = $smcFunc['db_query']('', '
+		SELECT m.real_name, m.id_member
+		FROM {db_prefix}followers AS f
+		INNER JOIN {db_prefix}members AS m ON (f.id_member = m.id_member)
+		WHERE f.follows = {int:user_id}' . (!$include_banned ? ' AND m.is_activated < 10' : '') . '
+		ORDER BY m.real_name',
+		array(
+			'user_id' => (int) $user_info['id'],
+		)
+	);
+	$followers = array();
+	while ($row = $smcFunc['db_fetch_assoc']($request))
+		$followers[$row['id_member']] = $row['real_name'];
+	$smcFunc['db_free_result']($request);
+	
+	if ($output_method <> 'echo')
+		return $followers;
+		
+	foreach ($followers as $id => $name)
+		$followers[$id] = '<a href="' . $scripturl . '/index.php?action=profile;u=' . $id . '">' . $name . '</a>';
+	echo implode(',', $followers);
+}
+
 ?>

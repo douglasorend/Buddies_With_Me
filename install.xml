@@ -3,76 +3,7 @@
 <modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
 	<name>Followers List</name>
 	<id>Dougiefresh:Followers</id>
-	<version>1.3a</version>
-
-<!-------------------------------------------------------------------------------->
-<!-- New SSI function for gathering the names of our followers :p (SSI.php)     -->
-<!-------------------------------------------------------------------------------->
-<file name="$boarddir/SSI.php">
-	<operation>
-		<search position="after"><![CDATA[// This shuts down the SSI and shows the footer.]]></search>
-		<add><![CDATA[// Gets the whole followers list.
-function ssi_getFollowers($include_banned = false, $output_method = 'echo')
-{
-	global $smcFunc, $user_info, $scripturl;
-
-	$request = $smcFunc['db_query']('', '
-		SELECT m.real_name, m.id_member
-		FROM {db_prefix}followers AS f
-		INNER JOIN {db_prefix}members AS m ON (f.id_member = m.id_member)
-		WHERE f.follows = {int:user_id}' . ($include_banned ? ' AND m.is_activated < 10' : '') . '
-		ORDER BY m.real_name',
-		array(
-			'user_id' => (int) $user_info['id'],
-		)
-	);
-	$followers = array();
-	while ($row = $smcFunc['db_fetch_assoc']($request))
-		$followers[$row['id_member']] = $row['real_name'];
-	$smcFunc['db_free_result']($request);
-	
-	if ($output_method <> 'echo')
-		return $followers;
-		
-	foreach ($followers as $id => $name)
-		$followers[$id] = '<a href="' . $scripturl . '/index.php?action=profile;u=' . $id . '">' . $name . '</a>';
-	echo implode(',', $followers);
-}
-
-]]></add>
-	</operation>
-</file>
-<file name="$boarddir/ssi_examples.php">
-	<operation>
-		<search position="before"><![CDATA[<li><a href="#" onclick="showSSIBlock('ssi_whosOnline'); return false;">Who's Online</a></li>]]></search>
-		<add><![CDATA[
-						<li><a href="#" onclick="showSSIBlock('ssi_followers'); return false;">Followers</a></li>]]></add>
-	</operation>
-	<operation>
-		<search position="after"><![CDATA[
-
-<!-- WELCOME, LOGIN AND LOGOUT -->]]></search>
-		<add><![CDATA[
-
-			<div class="ssi_preview" id="ssi_followers">
-				<h2>SSI Get Followers Function</h2>
-				<p>This function shows which users are buddies with you.</p>
-
-				<h3>Code</h3>
-				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
-				<h3>Returned array</h3>
-				<div class="ssi_result"><?php ssi_getFollowers(); flush(); ?></div>
-
-				<h2>Getting a String of Followers</h2>
-				<p>This function can be used to create a string listing all of your followers.</p>
-
-				<h3>Code</h3>
-				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
-				<h3>Result</h3>
-				<div class="ssi_result"><?php ssi_getFollowers(); ?></div>
-			</div>]]></add>
-	</operation>
-</file>
+	<version>1.5</version>
 
 <!-------------------------------------------------------------------------------->
 <!-- Source Edits                                                               -->
@@ -207,4 +138,47 @@ function ResyncFollowers()
 			]]></add>
 	</operation>
 </file>
+
+<!-------------------------------------------------------------------------------->
+<!-- New SSI function for gathering the names of our followers :p (SSI.php)     -->
+<!-------------------------------------------------------------------------------->
+<file name="$boarddir/SSI.php">
+	<operation>
+		<search position="after"><![CDATA[require_once($sourcedir . '/Security.php');]]></search>
+		<add><![CDATA[
+require_once($sourcedir . '/Subs-Followers.php');]]></add>
+	</operation>
+</file>
+<file name="$boarddir/ssi_examples.php">
+	<operation>
+		<search position="before"><![CDATA[<li><a href="#" onclick="showSSIBlock('ssi_whosOnline'); return false;">Who's Online</a></li>]]></search>
+		<add><![CDATA[
+						<li><a href="#" onclick="showSSIBlock('ssi_followers'); return false;">Followers</a></li>]]></add>
+	</operation>
+	<operation>
+		<search position="after"><![CDATA[
+
+<!-- WELCOME, LOGIN AND LOGOUT -->]]></search>
+		<add><![CDATA[
+
+			<div class="ssi_preview" id="ssi_followers">
+				<h2>SSI Get Followers Function</h2>
+				<p>This function shows which users are buddies with you.</p>
+
+				<h3>Code</h3>
+				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
+				<h3>Returned array</h3>
+				<div class="ssi_result"><?php ssi_getFollowers(); flush(); ?></div>
+
+				<h2>Getting a String of Followers</h2>
+				<p>This function can be used to create a string listing all of your followers.</p>
+
+				<h3>Code</h3>
+				<div class="codeheader">Code: <a href="javascript:void(0);" onclick="return smfSelectText(this);" class="codeoperation">[Select]</a></div><code class="bbc_code">&lt;?php ssi_getFollowers(); ?&gt;</code>
+				<h3>Result</h3>
+				<div class="ssi_result"><?php ssi_getFollowers(); ?></div>
+			</div>]]></add>
+	</operation>
+</file>
+
 </modification>
